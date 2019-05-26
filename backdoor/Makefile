@@ -1,13 +1,13 @@
 AS=as
 LD=ld
-ASFLAGS=-Os -s --64
-LDFLAGS=-static -s
+ASFLAGS=-O0 -s --64 --gdwarf-2
+LDFLAGS=-static
 
 SOURCES=$(wildcard *.s)
 OBJECTS=$(SOURCES:.s=.o)
 EXECUTABLE=build
 
-.PHONY: all clean
+.PHONY: all clean exec
 
 all: 
 	$(SOURCES) $(EXECUTABLE)
@@ -22,3 +22,6 @@ $(OBJECTS): $(SOURCES)
 
 clean: 
 	rm -f $(OBJECTS) $(EXECUTABLE)
+
+exec:
+	chmod +x $(EXECUTABLE)
