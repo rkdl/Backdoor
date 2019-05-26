@@ -1,34 +1,23 @@
-.include "defs.h"
+.include "sys_defs.h"
 .include "app_defs.h"
 
-.text
-.globl	sock_address
-.bss
-.align 16
-.type	sock_address, @object
+.section .bss
 .size	sock_address, 16
-
 sock_address:
 	.zero	16
 	.comm	sock,4,4
 	.comm	sock_fd,4,4
-	.globl	bash
 	.section	.rodata
 
 .bash_str_data:
 	.string	"/bin/bash"
-	.data
 	.align 8
-	.type	bash, @object
 	.size	bash, 8
+	.section .rodata
 
 bash:
 	.quad	.bash_str_data
 	.text
-	.globl	main
-	.type	main, @function
-
-.section .text
 
 .global _start
 _start:

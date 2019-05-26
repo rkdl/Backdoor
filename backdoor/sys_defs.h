@@ -3,13 +3,7 @@
  * For parameter info see
  *   http://blog.rchapman.org/posts/Linux_System_Call_Table_for_x86_64/
  */
-SYS_READ    =  0
-SYS_WRITE   =  1
-SYS_OPEN    =  2
-SYS_CLOSE   =  3
-SYS_LSEEK   =  8
-SYS_MMAP    =  9
-SYS_MUNMAP  = 11
+
 SYS_DUP2    = 33
 SYS_SOCKET  = 41
 SYS_CONNECT = 42
@@ -61,3 +55,10 @@ MAP_PRIVATE = 2
 AF_INET = 2
 SOCK_STREAM = 1
 IPPROTO_TCP = 6
+
+/*
+ * custom defs
+ */
+NULL = 0
+SIZEOF_UINT_16_T = 2
+SIZEOF_STRUCT_SOCKADDR = 16
