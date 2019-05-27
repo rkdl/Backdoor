@@ -3,25 +3,19 @@ LD=ld
 ASFLAGS=-O0 -s --64 --gdwarf-2
 LDFLAGS=-static
 
-SOURCES=$(wildcard *.s)
-OBJECTS=$(SOURCES:.s=.o)
-EXECUTABLE=build
+EXECUTABLE=Backdoor
 
 .PHONY: all clean exec
 
 all: 
-	$(SOURCES) $(EXECUTABLE)
+	backdoor
 
-# Create executable
-$(EXECUTABLE): $(OBJECTS) 
-	$(LD) $(LDFLAGS) $(OBJECTS) -o $@
-
-# Compile
-$(OBJECTS): $(SOURCES)
-	$(AS) $(ASFLAGS) $(SOURCES) -o $@
+backdoor:
+	$(AS) $(ASFLAGS) backdoor.s -o backdoor.o
+	$(LD) $(LDFLAGS) backdoor.o -o $(EXECUTABLE)
 
 clean: 
-	rm -f $(OBJECTS) $(EXECUTABLE)
+	rm -f *.o $(EXECUTABLE)
 
 exec:
 	chmod +x $(EXECUTABLE)
