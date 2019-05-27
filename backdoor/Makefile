@@ -3,10 +3,10 @@ LD=ld
 
 DEBUG ?= 1
 ifeq ($(DEBUG), 1)
-    ASFLAGS=-O0 -s --64 --gdwarf-2
+	ASFLAGS=-O0 -s --64 --gdwarf-2
 	LDFLAGS=-static
 else
-    ASFLAGS=-Os -s --64
+	ASFLAGS=-Os -s --64
 	LDFLAGS=-static --strip-all
 endif
 
@@ -14,7 +14,7 @@ SOURCES=$(wildcard *.s)
 OBJECTS=$(SOURCES:.s=.o)
 EXECUTABLE=Backdoor
 
-.PHONY: all clean exec
+.PHONY: all clean exec debug
 
 all: $(SOURCES) $(EXECUTABLE)
 
@@ -29,3 +29,6 @@ clean:
 
 exec:
 	chmod +x $(EXECUTABLE)
+
+debug:
+	gdb $(EXECUTABLE)
